@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  dbeaver:
+    build: app
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY:0
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+
+  db:
+    image: mariadb:latest
+    ports:
+      - 3306
+    healthcheck:
+      test: "pwd"
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=maria
+      - MYSQL_PASSWORD=pass

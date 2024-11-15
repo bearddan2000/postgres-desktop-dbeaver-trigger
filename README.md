@@ -1,25 +1,16 @@
-# docker-desktop-dbeaver-database-visualation
+# mysql-desktop-dbeaver
 
 ## Description
-This is a POC project to demonstrate dbeaver community edition a database application.
-
-This is a barebones installation no pluggins where added. 
-
-In order to be able to get files out of the container one must add a *volume* to the docker run command.
-
-ie.
-without a volume
-`docker run --rm` ...
-with a volume
-`docker run --rm -v $(pwd):/app` ...
-
-Supports X11 display forwarding from docker container.
+Creates a small database table
+called `dog`.
 
 ## Tech stack
+- mysql
 - dbeaver
 
 ## Docker stack
-- ubuntu
+- ubuntu:22.04
+- mariadb
 
 ## To run
 `sudo ./install.sh -u`

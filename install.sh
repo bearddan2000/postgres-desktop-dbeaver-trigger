@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 basefile="install"
 logfile="general.log"
 timestamp=`date '+%Y-%m-%d %H:%M:%S'`
@@ -62,6 +61,22 @@ function docker-check() {
 
 }
 
+function docker-compose-check() {
+  scope="docker-compose-check"
+  info_base="[$timestamp INFO]: $basefile::$scope"
+  cmd=`docker-compose -v`
+
+  echo "$info_base started" >> $logfile
+
+  if [ -z "$cmd" ]; then
+    echo "$info_base docker-compose not installed"
+    echo "$info_base docker-compose not installed" >> $logfile
+  fi
+
+  echo "$info_base ended" >> $logfile
+  echo "================" >> $logfile
+
+}
 function usage() {
     echo ""
     echo "Usage: "
@@ -73,26 +88,19 @@ function usage() {
 }
 function start-up(){
 
-  scope="start-up"
-  docker_img_name=`head -n 1 README.md | sed 's/# //'`
-  info_base="[$timestamp INFO]: $basefile::$scope"
+    local scope="start-up"
+    local docker_img_name=`head -n 1 README.md | sed 's/# //'`
+    local info_base="[$timestamp INFO]: $basefile::$scope"
 
-  echo "$info_base started" >> $logfile
+    echo "$info_base started" >> $logfile
 
-  xhost + local:docker
+    echo "$info_base starting services" >> $logfile
 
-  sudo docker build -t ${docker_img_name} .
+    sudo docker-compose up
 
-  echo "$info_base running image" >> $logfile
+    echo "$info_base ended" >> $logfile
 
-  sudo docker run -ti --rm \
-    -v /tmp/.X11-unix:/tmp/.X11-unix ${docker_img_name}
-
-  echo "$info_base running image" >> $logfile
-
-  echo "$info_base ended" >> $logfile
-
-  echo "================" >> $logfile
+    echo "================" >> $logfile
 }
 function tear-down(){
 
@@ -101,7 +109,9 @@ function tear-down(){
 
     echo "$info_base started" >> $logfile
 
-    echo "$info_base services removed" >> $logfile
+    echo "$info_base starting services" >> $logfile
+
+    sudo docker compose down
 
     echo "$info_base ended" >> $logfile
 
@@ -110,6 +120,7 @@ function tear-down(){
 
 root-check
 docker-check
+docker-compose-check
 
 while getopts ":udh" opts; do
   case $opts in
