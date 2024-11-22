@@ -1,0 +1,2 @@
+CREATE TRIGGER "dog_trigger" AFTER INSERT OR UPDATE OR DELETE ON "public".dog
+  FOR EACH ROW EXECUTE FUNCTION fn_trigger();

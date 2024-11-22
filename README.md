@@ -1,16 +1,16 @@
-# mysql-desktop-dbeaver
+# postgres-desktop-dbeaver-trigger
 
 ## Description
 Creates a small database table
 called `dog`.
 
 ## Tech stack
-- mysql
+- postgres
 - dbeaver
 
 ## Docker stack
 - ubuntu:22.04
-- mariadb
+- postgres:alpine
 
 ## To run
 `sudo ./install.sh -u`

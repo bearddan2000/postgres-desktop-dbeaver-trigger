@@ -1,10 +1,13 @@
-DROP TABLE IF EXISTS `animal`.dog;
+CREATE SEQUENCE IF NOT EXISTS audit_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1;
 
-CREATE TABLE `animal`.dog (
-	id INT PRIMARY KEY auto_increment,
-	breed varchar(100) NOT NULL,
-	color varchar(10) NOT NULL
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS "public".audit;
+
+CREATE TABLE "public".audit (
+	"id" integer DEFAULT nextval('audit_id_seq') NOT NULL,
+	"userId" text NOT NULL,
+	"changed" TIMESTAMP NULL,
+	"actionId" integer NOT NULL,
+	"tblId" integer NOT NULL,
+	"old_val" text DEFAULT NULL,
+	"new_val" text DEFAULT NULL
+) WITH (oids = false);
